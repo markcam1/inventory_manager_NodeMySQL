@@ -7,10 +7,10 @@ The application functionality includes:
 3. Allowing user/manager to view and add to inventory,
 4. Displays sales data to the user/manager. 
 
-[Video Demonstration](https://youtu.be/Q25t5P_MOGs) - this a demo of the full application
+[Video Demonstration](https://youtu.be/5oP7jD8HZ6k) - this a demo of the full application
 
 
-![????????](https://github.com/markcam1/liri-node-app/blob/master/media/liri_node.png)
+![node](https://github.com/markcam1/liri-node-app/blob/master/media/liri_node.png)
 
 ---
 
@@ -22,9 +22,9 @@ The application functionality includes:
 *  Basic knowledge of MySQL. 
 ```
 ### Installing
-```
-1) - Clone this repository to your local system.
-```
+
+**Clone this repository to your local system**
+
  Use Git or checkout with SVN using the web URL. 
  [https://github.com/markcam1/inventory_manager_NodeMySQL.git]
 
@@ -33,9 +33,7 @@ _The relevant JavaScript files_:
 2. __bamazonManager.js__: creates and manages the manager view (View Products for Sale, View Low Inventory, Add to Inventory, Add New Product)
 3. __bamazonSupervisor.js__: creates and manages the supervisor view (View Product Sales by Department, Create New Department)
 
- ```
-2) - Install MySQL 
- ```
+**Install MySQL**
 - If you do not have this installed, see the link to MySQL Tools [below](#tools) and install on your local system.
 - Change your connection.js file to use the appropriate configurations. 
 
@@ -71,24 +69,31 @@ CREATE TABLE departments(
 The statement above was used for my database but if you are  with the functionality feel free to adjust it as you'd like.
 For instance, the column product_name might not need to be 100 characters long as defined in [VARCHAR](http://sqlines.com/mysql/datatypes/varchar). 
 
-```
-3) - Install Node & Node Packages:
-```
-**node.js NOT installed**
+
+**Install Node & Node Packages**
+
+_node.js NOT installed_
 Make sure node.js is installed on your machine by going to a terminal and typing:
 
->node -v
+```
+node -v
+```
 
 1. If it is not installed, please visit the [node.js](#tools) link and install it.
 2. Then go to the root of this project and type:
 
-> npm init
+```
+npm init
+```
 
 or additionally if you want to skip the questions, you can create a [default](https://docs.npmjs.com/getting-started/using-a-package.json) file, using: 
 
-> npm init --yes
+```
+npm init --yes
+```
 
-**node.js IS installed**
+
+_node.js IS installed_
 If you've cloned my repository to your local system then you notice:
 
 1. package-lock.json
@@ -96,7 +101,9 @@ If you've cloned my repository to your local system then you notice:
 
 This means you can run the command:
 
->npm install
+```
+npm install
+```
 
 and install the packages I used to verify my code.
 
@@ -104,17 +111,18 @@ If you interested in learning about the difference between package-lock.json & p
 you can read the [technical-specs](https://docs.npmjs.com/files/package-locks)] 
 or a more [casual-description](https://medium.com/@Quigley_Ja/everything-you-wanted-to-know-about-package-lock-json-b81911aa8ab8). 
 
-**node.js packages**
+_node.js packages_
 If you are creating a repository from scratch, please see the packages I used for this project [below](#tools).
 
 
 ### Usage
-
 1. **Customer View**
 - open a terminal in the root of your project (I use git bash as my terminal of choice)
 - run the command below to start the customer app
 
-> node bamazonCustomer.js
+```
+node bamazonCustomer.js
+```
 
 - a list of products is displayed
 - choose and item and the number of units
@@ -123,7 +131,9 @@ If you are creating a repository from scratch, please see the packages I used fo
 2.  **Manager View**
 - In the root of your project, run the command below to start the Manager app
 
-> node bamazonManager.js
+```
+node bamazonManager.js
+```
 
 - Menu options are displayed
 - *View Products for Sale:* the app shows every available item: the item IDs, names, prices, and quantities
@@ -134,7 +144,9 @@ If you are creating a repository from scratch, please see the packages I used fo
 3.  **Supervisor View**
 - In the root of your project, run the command below to start the supervisor app
 
-> node bamazonSupervisor.js
+```
+node bamazonSupervisor.js
+```
 
 - Menu options are displayed
 - *View Product Sales by Department*: displays a summarized table in their terminal/bash window.

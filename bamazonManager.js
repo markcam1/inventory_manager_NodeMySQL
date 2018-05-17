@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const connection = require("./connect.js");
-
+const cTable = require('console.table');
 
 connection.connect(function(err) {
     if (err) throw err;
@@ -14,7 +14,7 @@ inquirer
     name: "manager",
     type: "rawlist",
     message: "Please choose an option:",
-    choices: [ "View Products for Sale","View Low Inventory", "Add to Inventory", "Add New Product", "Exit"]
+    choices: ["View Products for Sale","View Low Inventory", "Add to Inventory", "Add New Product", "Exit"]
     })
     .then(function(answer) {
         if (answer.manager == "View Products for Sale") {
@@ -38,24 +38,44 @@ inquirer
 function readInventory() {
     connection.query("SELECT * FROM products", function(err, res) {
       if (err) throw err;
-      for (var i = 0; i < res.length; i++) {
-        console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | $" + res[i].price  + " | " + res[i].stock_quantity);
-      }
-      console.log("-----------------------------------"); 
+
+        let dbResultsObject = {}
+        for (var i = 0; i < res.length; i++) {
+            dbResultsObject[i] = {Prod_ID:res[i].item_id, Product_Name:res[i].product_name, Department_Name:res[i].department_name, Price:res[i].price, Stock_Quantity:res[i].stock_quantity}
+        }
+        
+        let displayTableArray = [];
+        for (key in dbResultsObject){
+            if (dbResultsObject.hasOwnProperty){
+                displayTableArray.push(dbResultsObject[key]);
+            }
+        }
+        console.table(displayTableArray);
+        console.log("-----------------------------------"); 
+        start()
     });
-    start()
 }
 
 const lowInventory = () => {
     connection.query("SELECT * FROM products where stock_quantity < 5", function(err, res) {
       if (err) throw err;
-      for (var i = 0; i < res.length; i++) {
-        console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | $" + res[i].price  + " | " + res[i].stock_quantity);
-      }
-      console.log("-----------------------------------"); 
+
+        let dbResultsObject = {}
+        for (var i = 0; i < res.length; i++) {
+            dbResultsObject[i] = {Prod_ID:res[i].item_id, Product_Name:res[i].product_name, Department_Name:res[i].department_name, Price:res[i].price, Stock_Quantity:res[i].stock_quantity}
+        }
+
+        let displayTableArray = [];
+        for (key in dbResultsObject){
+            if (dbResultsObject.hasOwnProperty){
+                displayTableArray.push(dbResultsObject[key]);
+            }
+        }
+        console.table(displayTableArray);
+        console.log("-----------------------------------"); 
+        start()
     });
 };
-
 
 const addInventory = () => {
     connection.query("SELECT * FROM products", function(err, results) {
@@ -83,7 +103,7 @@ const addInventory = () => {
                 if (isNaN(value) === false) {
                   return true;
                 }
-                return false;
+                return 'You must enter a NUMBER';
               }
               }
           ])
@@ -109,65 +129,80 @@ const addInventory = () => {
                         ],
                         function(error) {
                         if (error) throw err;
-                            console.log("\n--------------------------\nInventory update was successfully!");
-                            //start();
+                            console.log('\x1b[33m%s\x1b[0m', "\n--------------------------\nInventory update was successfully!\n");
                             readInventory();
                         }
                     );
               }
               else{
-                  console.log("\nInventory must be a positive whole number!");
+                  console.log('\x1b[41m%s\x1b[0m',"\nInventory must be a positive whole number!");
                   console.log("-----------------------------------");
                   readInventory();
               }
           });
-      });
-    }
+    });
+}
  
 const addProduct = () => {
-    inquirer
-    .prompt([
-        {
-            name: "prod",
-            type: "input",
-            message: "Product name = "
-        },
-        {
-            name: "department",
-            type: "input",
-            message: "Department = "
-        },
-        {
-            name: "price",
-            type: "input",
-            message: "Unit wholesale price = ",
-            validate: function(value) {
-                if (isNaN(value) === false) {
-                  return true;
+    connection.query("SELECT * FROM products", function(err, results) {
+        if (err) throw err;
+
+
+        inquirer
+        .prompt([
+            {
+                name: "prod",
+                type: "input",
+                message: "Product name = "
+            },
+            {
+                name: "department",
+                type: "rawlist",
+                choices: function() {
+                    var choiceArray = [];
+                    for (var i = 0; i < results.length; i++) {
+                        choiceArray.push(results[i].department_name);
+                    }
+                    groupedArray = choiceArray.filter(function(item, pos) {
+                        return choiceArray.indexOf(item) == pos;
+                    })
+                    return groupedArray;
+                },
+                message: "Choose Department number: ",
+            },
+            {
+                name: "price",
+                type: "input",
+                message: "Unit wholesale price = ",
+                validate: function(value) {
+                    if (isNaN(value) === false) {
+                    return true;
+                    }
+                    return 'You must enter a NUMBER';
                 }
-                return false;
-              }
-        },
-        {
-            name: "units",
-            type: "input",
-            message: "Number of units to add = ",
-            validate: function(value) {
-                if (isNaN(value) === false) {
-                  return true;
+            },
+            {
+                name: "units",
+                type: "input",
+                message: "Number of units to add = ",
+                validate: function(value) {
+                    if (isNaN(value) === false) {
+                    return true;
+                    }
+                    return 'You must enter a NUMBER';
                 }
-                return false;
-              }
-        },
-    ])
+            },
+        ])
     .then(function(answer) {
         var dbSql = "INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ?";
         var inputArr = [
-            [answer.prod, answer.department, answer.price, answer.unit]
+            [answer.prod, answer.department, answer.price, answer.units]
         ]
         connection.query(dbSql,[inputArr], function(err, res) {
             if (err) throw err;
+            console.log('\x1b[33m%s\x1b[0m',"\n--------------------------\nProduct update was successfully!\n");
             });
-            start()
+            readInventory()
         });
+    });
   };

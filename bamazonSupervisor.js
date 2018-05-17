@@ -29,7 +29,6 @@ function start() {
         });
 }
 
-
 function ProdSales(departName, overheadCost) {
     this.departName = departName;
     this.overheadCost = overheadCost;
@@ -37,36 +36,32 @@ function ProdSales(departName, overheadCost) {
 
 const readProductSales = () => {
 
-    //products.product_sales
-
-    console.log("\nread Product Sales")
     console.log("-----------------------------------");
-    let sql = "SELECT departments.department_id, departments.department_name, departments.over_head_costs, sum(products.product_sales) as sum FROM departments LEFT JOIN products ON departments.department_name = products.department_name GROUP BY departments.department_id";
+    let sql = `
+    SELECT departments.department_id, departments.department_name, departments.over_head_costs, 
+    sum(products.product_sales) as sum FROM departments 
+    LEFT JOIN 
+    products ON departments.department_name = products.department_name 
+    GROUP BY departments.department_id;`
 
     connection.query(sql, function(err, res) {
         if (err) throw err;
 
-        var objectsForE = {}
-        console.log("Department ID | Department Name | Overhead Cost | Product Sales | Total Profit ");
-        for (var i = 0; i < res.length; i++) {  
-
+        let dbResultsObject = {}
+        for (let i = 0; i < res.length; i++) {  
             totalProfitNum = res[i].sum - res[i].over_head_costs;
-            objectsForE[i] = {department_id: res[i].department_id, department_name: res[i].department_name, overhead_cost : res[i].over_head_costs, product_sales: res[i].sum, total_profit:totalProfitNum};
-
+            dbResultsObject[i] = {department_id: res[i].department_id, department_name: res[i].department_name, overhead_cost : res[i].over_head_costs, product_sales: res[i].sum, total_profit:totalProfitNum};
         }
      
-        var loserArr22 = [];
-        for (key in objectsForE){
-            if (objectsForE.hasOwnProperty){
-                loserArr22.push(objectsForE[key]);
-                //console.log(loserArr22);
+        let displayTableArray = [];
+        for (key in dbResultsObject){
+            if (dbResultsObject.hasOwnProperty){
+                displayTableArray.push(dbResultsObject[key]);
             }
         }
-        console.log("TABLE-----------------------------------"); 
-        console.table(loserArr22);
-        console.log("END TABLE-----------------------------------"); 
+        console.table(displayTableArray);
+        start();
     });
-    start();
 } 
 
 const createNewDepartment = () => {
@@ -85,18 +80,19 @@ const createNewDepartment = () => {
                 if (isNaN(value) === false) {
                   return true;
                 }
-                return false;
-              }
+                return 'You must enter a NUMBER';
+            }
         },
     ])
     .then(function(answer) {
-        var dbSql = "INSERT INTO departments (department_name, over_head_costs) VALUES ?";
-        var inputArr = [
+        let dbSql = "INSERT INTO departments (department_name, over_head_costs) VALUES ?";
+        let inputArr = [
             [answer.name, answer.cost]
         ]
         connection.query(dbSql,[inputArr], function(err, res) {
             if (err) throw err;
-            });
-            start()
+            
         });
-    };
+        start()
+    });
+};
