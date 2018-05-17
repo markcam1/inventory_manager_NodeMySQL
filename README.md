@@ -37,10 +37,10 @@ _The relevant JavaScript files_:
 - If you do not have this installed, see the link to MySQL Tools [below](#tools) and install on your local system.
 - Change your connection.js file to use the appropriate configurations. 
 
-![mysql-connection](https://github.com/markcam1/inventory_manager_NodeMySQL/blob/beta_im/media/mysql_connect.png)
+![mysql-connection](https://github.com/markcam1/inventory_manager_NodeMySQL/blob/master/media/mysqlconnect.png)
 
-- Use your MySQL GUI or command-line application and run the SQL statement from the [DB file](#) or from the SQL statement below. 
-- Insert data into the tables. Please create your own data or use my [csv file](#).
+- Use your MySQL GUI or command-line application and run the SQL statement from the [DB file](https://github.com/markcam1/inventory_manager_NodeMySQL/tree/master/data) or from the SQL statement below. 
+- Insert data into the tables. Please create your own data or use my [csv file](https://github.com/markcam1/inventory_manager_NodeMySQL/tree/master/data).
 
 
 ```
@@ -151,7 +151,7 @@ node bamazonSupervisor.js
 - Menu options are displayed
 - *View Product Sales by Department*: displays a summarized table in their terminal/bash window.
 
-![supervisor-table](#)
+![supervisor-table](https://github.com/markcam1/inventory_manager_NodeMySQL/blob/master/media/super_Table.png)
 
 - *Create New Department:* allows the user to add a new department
 
