@@ -25,9 +25,8 @@ The application functionality includes:
 
 **Clone this repository to your local system**
 
- Use Git or checkout with SVN using the web URL. 
- [https://github.com/markcam1/inventory_manager_NodeMySQL.git]
-
+ Use Git or checkout with SVN using the web URL.[Clone](https://github.com/markcam1/inventory_manager_NodeMySQL.git)
+ 
 _The relevant JavaScript files_:
 1. __bamazonCustomer.js__: creates and manages the customer view (view inventory & purchase items/deplete inventory)
 2. __bamazonManager.js__: creates and manages the manager view (View Products for Sale, View Low Inventory, Add to Inventory, Add New Product)
